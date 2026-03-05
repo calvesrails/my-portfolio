@@ -1444,8 +1444,36 @@ header .box-icons{
     }
 
     .card h1{
-        bottom: 30%;
-        font-size: 5px;
+        bottom: 32%;
+        font-size: 16px;
+    }
+
+    .info-cards .card:first-child{
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 10px;
+    }
+
+    .info-cards .card:first-child h1{
+        position: static;
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.1;
+    }
+
+    .info-cards .card:first-child p{
+        position: static;
+        margin: 0;
+        max-width: 100%;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .info-cards .card:first-child .card-profile-img{
+        align-self: center;
+        width: 44%;
+        margin-top: 8px;
     }
 
     .project-card {
