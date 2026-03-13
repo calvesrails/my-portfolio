@@ -5,7 +5,8 @@ const video3 = document.getElementById('projectVideo3');
 // Sidebar elements //
 const sideBar = document.querySelector('.sidebar');
 const menu = document.querySelector('.menu-icon');
-const closeIcon = document.querySelector('.close-icon')
+const closeIcon = document.querySelector('.close-icon');
+const sidebarLinks = Array.from(document.querySelectorAll('.sidebar a'));
 
 
 const hoverSign = document.querySelector('.hover-sign');
@@ -178,16 +179,73 @@ videoList.forEach (function(video){
 })
 
 // Sidebar elements //
-menu.addEventListener("click", function(){
-    sideBar.classList.remove("close-sidebar")
-    sideBar.classList.add("open-sidebar")
+const openSidebar = function () {
+    if (!sideBar) return;
+    sideBar.classList.remove('close-sidebar');
+    sideBar.classList.add('open-sidebar');
+    document.body.classList.add('sidebar-open');
+};
+
+const closeSidebar = function () {
+    if (!sideBar) return;
+    sideBar.classList.remove('open-sidebar');
+    sideBar.classList.add('close-sidebar');
+    document.body.classList.remove('sidebar-open');
+};
+
+if (menu) {
+    menu.addEventListener('click', openSidebar);
+}
+
+if (closeIcon) {
+    closeIcon.addEventListener('click', closeSidebar);
+}
+
+sidebarLinks.forEach(function (link) {
+    link.addEventListener('click', closeSidebar);
 });
 
-closeIcon.addEventListener("click", function(){
-    sideBar.classList.remove("open-sidebar");
-    sideBar.classList.add("close-sidebar");
-    
-})
+window.addEventListener('resize', function () {
+    if (window.innerWidth > 960) {
+        closeSidebar();
+    }
+});
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        closeSidebar();
+    }
+});
+
+const revealElements = Array.from(document.querySelectorAll('.autoBlur, .autoDisplay, .fadein-left'));
+
+if (revealElements.length && 'IntersectionObserver' in window) {
+    document.body.classList.add('reveal-enabled');
+
+    const markVisibleIfNeeded = function (element) {
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.9) {
+            element.classList.add('is-visible');
+        }
+    };
+
+    revealElements.forEach(markVisibleIfNeeded);
+
+    const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, {
+        threshold: 0.16,
+        rootMargin: '0px 0px -8% 0px'
+    });
+
+    revealElements.forEach(function (element) {
+        revealObserver.observe(element);
+    });
+}
 
 const certificationCards = Array.from(document.querySelectorAll('.certification-card'));
 
